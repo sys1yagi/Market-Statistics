@@ -25,13 +25,19 @@ public class SalesReader {
 			return value;
 		}
 	};
+	private final static CellProcessor IGNORE_CONMA_PARSE_DOUBLE = new ParseDouble(){
+		public Object execute(Object value, CSVContext context) throws org.supercsv.exception.SuperCSVException {
+			value = ((String)value).replaceAll(",", "");
+			return super.execute(value, context);
+		};
+	};
 	static final CellProcessor[] salesProcessors = new CellProcessor[] {
-			new StrNotNullOrEmpty(), new ParseDate("yyyy-MM-dd"),
-			new ParseLong(), new StrNotNullOrEmpty(),
-			new ParseDate("yyyy-MM-dd"), new StrNotNullOrEmpty(),
-			new StrNotNullOrEmpty(), new StrNotNullOrEmpty(),
-			new StrNotNullOrEmpty(), new ParseDouble(), new ParseDouble(),
-			new ParseDouble(), new StrNotNullOrEmpty(), DIRECTORY_VALUE,
+			DIRECTORY_VALUE, new ParseDate("yyyy-MM-dd"),
+			new ParseLong(), DIRECTORY_VALUE,
+			new ParseDate("yyyy-MM-dd"), DIRECTORY_VALUE,
+			DIRECTORY_VALUE, DIRECTORY_VALUE,
+			DIRECTORY_VALUE, IGNORE_CONMA_PARSE_DOUBLE, IGNORE_CONMA_PARSE_DOUBLE,
+			IGNORE_CONMA_PARSE_DOUBLE, new StrNotNullOrEmpty(), DIRECTORY_VALUE,
 			DIRECTORY_VALUE, DIRECTORY_VALUE, DIRECTORY_VALUE, DIRECTORY_VALUE,
 			DIRECTORY_VALUE };
 
