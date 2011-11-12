@@ -19,7 +19,12 @@ public class Main {
             Settings settings = new Settings();
             File salesReportDirectory = new File(settings.getSalesReportDirectory());
             List<Sales> sales = new ArrayList<Sales>();
-            for (File salesReport : salesReportDirectory.listFiles(new CsvFileFilter())) {
+            File[] csv = salesReportDirectory.listFiles(new CsvFileFilter());
+            if(csv == null){
+            	System.out.println("CSV file was not found! directory = " + settings.getSalesReportDirectory());
+            	return;
+            }
+            for (File salesReport : csv) {
                 sales.addAll(SalesReader.readCSV(salesReport));
             }
             new DairyBarGraph().createChart(new File("dairy"), "dairy", sales);

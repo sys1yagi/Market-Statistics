@@ -1,0 +1,1 @@
+java -classpath ./bin jp.dip.sys1.market.statistics.Main 
