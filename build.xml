@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="market-statistics" default="compile">
+	<property name="output" value="bin" />
+	<property name="jar.name" value="market-statistics.jar" />
+	<target name="clean">
+		<delete dir="${output}" />
+	</target>
+	<target name="init">
+		<mkdir dir="${output}" />
+	</target>
+	<target name="compile" depends="clean,init">
+		<javac destdir="${output}" srcdir="src" fork="true" encoding="utf-8">
+			<classpath>
+				<pathelement path="libs/jcommons-1.0.16.jar" />
+				<pathelement path="libs/jfreechart-1.0.13.jar" />
+				<pathelement path="libs/spiffy-with_source-all-0.05.jar" />
+				<pathelement path="libs/SuperCSV-with_src-1.52.jar" />
+			</classpath>
+		</javac>
+	</target>
+	<target name="jar" depends="compile">
+		<jar basedir="${output}" destfile="${jar.name}" />
+	</target>
+</project>
