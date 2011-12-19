@@ -1,1 +1,29 @@
+##################
+#English
+##################
+
+Introduction:
+
+Build:
+
+Usage:
+
+
+##################
+#Japanese
+##################
+■概要
 Android Marketの売上レポートを解析し、グラフなどを出力するツールです。
+
+■ビルド
+
+ant
+
+
+■Jarの作成
+
+ant jar
+
+■使い方
+
+settings.properetisのsales_report_directoryにグラフ化したい売上レポートが入っているディレクトリを指定して下さい。
