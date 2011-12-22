@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.dip.sys1.market.statistics.graph.DairyBarGraph;
+import jp.dip.sys1.market.statistics.graph.MonthlyBarGraph;
 
 public class Main {
 
@@ -27,7 +28,9 @@ public class Main {
             for (File salesReport : csv) {
                 sales.addAll(SalesReader.readCSV(salesReport));
             }
-            new DairyBarGraph().createChart(new File("dairy"), "dairy", sales);
+           
+            //new DairyBarGraph().createChart(new File("dairy"), "dairy", sales);
+            new MonthlyBarGraph().createChart(new File("monthly"), "monthly", sales);
         } catch (IOException e) {
             e.printStackTrace();
         }

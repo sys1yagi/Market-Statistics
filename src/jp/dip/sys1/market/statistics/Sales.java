@@ -3,7 +3,7 @@ package jp.dip.sys1.market.statistics;
 import java.util.Date;
 
 /**
- * 売上データ
+ * 売上データ。一個の販売データを表す
  * 
  * @author yagitoshihiro
  * 
