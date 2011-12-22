@@ -17,7 +17,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import jp.dip.sys1.market.statistics.Sales;
 
-public class DairyBarGraph implements SalesGraph {
+public class MonthlyLineGraph implements SalesGraph {
 
 	@Override
 	public void createChart(File outputDir, String prefix, List<Sales> sales) {
@@ -31,7 +31,7 @@ public class DairyBarGraph implements SalesGraph {
 			if (tmp.isEmpty()) {
 				continue;
 			}
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
 			Map<String, Integer> counts = new TreeMap<String, Integer>();
 			for (Sales s : tmp) {
 				String key = format.format(s.getOrderChargedDate());
@@ -42,17 +42,18 @@ public class DairyBarGraph implements SalesGraph {
 					counts.put(key, 1 + count);
 				}
 			}
+			//グラフの作成
+			
 			ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
 			DefaultCategoryDataset data = new DefaultCategoryDataset();
 			for (Entry<String, Integer> e : counts.entrySet()) {
-				data.addValue(e.getValue(), "日別売上", e.getKey());
+				data.addValue(e.getValue(), "月別売上", e.getKey());
 				// log
 				System.out.println(e.getKey() + ":" + e.getValue());
 			}
-			JFreeChart chart = ChartFactory.createBarChart("dairy sales: "
-					+ tmp.get(0).getProductTitle() + "/"
-					+ tmp.get(0).getProductID(), "dairy", "count", data,
-					PlotOrientation.HORIZONTAL, true, false, false);
+			JFreeChart chart = ChartFactory.createLineChart("monthly sales: " + tmp.get(0).getProductTitle() + "/"
+					+ tmp.get(0).getProductID(), "monthly", "count", data,
+					PlotOrientation.VERTICAL, true, false, false);
 			try {
 				ChartUtilities.saveChartAsPNG(new File(outputDir, prefix + "-"
 						+ tmp.get(0).getProductID() + ".png"), chart, 800, 600);

@@ -9,6 +9,7 @@ import java.util.List;
 
 import jp.dip.sys1.market.statistics.graph.DairyBarGraph;
 import jp.dip.sys1.market.statistics.graph.MonthlyBarGraph;
+import jp.dip.sys1.market.statistics.graph.MonthlyLineGraph;
 
 public class Main {
 
@@ -30,7 +31,8 @@ public class Main {
             }
            
             //new DairyBarGraph().createChart(new File("dairy"), "dairy", sales);
-            new MonthlyBarGraph().createChart(new File("monthly"), "monthly", sales);
+            new MonthlyBarGraph().createChart(new File("monthly"), "monthly_bar", sales);
+            new MonthlyLineGraph().createChart(new File("monthly"), "monthly_line", sales);
         } catch (IOException e) {
             e.printStackTrace();
         }

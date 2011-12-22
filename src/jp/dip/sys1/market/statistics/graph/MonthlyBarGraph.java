@@ -3,7 +3,6 @@ package jp.dip.sys1.market.statistics.graph;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -24,7 +23,7 @@ public class MonthlyBarGraph implements SalesGraph {
 		if (!outputDir.exists()) {
 			outputDir.mkdirs();
 		}
-		Map<String, List<Sales>> packages = dispatch(sales);
+		Map<String, List<Sales>> packages = Util.dispatchProductId(sales);
 
 		for (Entry<String, List<Sales>> entry : packages.entrySet()) {
 			List<Sales> tmp = new ArrayList<Sales>(entry.getValue());
@@ -63,25 +62,5 @@ public class MonthlyBarGraph implements SalesGraph {
 			System.out.println(entry.getKey() + ":" + tmp.size());
 			System.out.println(tmp.get(0));
 		}
-	}
-	
-	/**
-	 * Salesをプロダクト毎に振り分け、Mapを作成する
-	 * @param sales
-	 * @return
-	 */
-	private Map<String, List<Sales>> dispatch(List<Sales> sales) {
-		Map<String, List<Sales>> map = new HashMap<String, List<Sales>>();
-		for (Sales s : sales) {
-			List<Sales> ss = map.get(s.getProductID());
-			if (ss == null) {
-				ss = new ArrayList<Sales>();
-				ss.add(s);
-				map.put(s.getProductID(), ss);
-			} else {
-				ss.add(s);
-			}
-		}
-		return map;
 	}
 }

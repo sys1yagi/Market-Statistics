@@ -1,0 +1,4 @@
+*.class
+bin/*
+sales/*
+.DS_Store
