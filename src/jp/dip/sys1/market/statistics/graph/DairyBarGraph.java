@@ -15,7 +15,7 @@ import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import jp.dip.sys1.market.statistics.Sales;
+import jp.dip.sys1.market.statistics.data.Sales;
 
 public class DairyBarGraph implements SalesGraph {
 

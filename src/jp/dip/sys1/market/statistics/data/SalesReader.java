@@ -1,10 +1,11 @@
-package jp.dip.sys1.market.statistics;
+package jp.dip.sys1.market.statistics.data;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import org.supercsv.cellprocessor.ParseDate;
 import org.supercsv.cellprocessor.ParseDouble;

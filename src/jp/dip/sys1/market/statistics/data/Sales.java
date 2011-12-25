@@ -1,4 +1,4 @@
-package jp.dip.sys1.market.statistics;
+package jp.dip.sys1.market.statistics.data;
 
 import java.util.Date;
 

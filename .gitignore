@@ -1,4 +1,5 @@
 *.class
 bin/*
 sales/*
+output/*
 .DS_Store

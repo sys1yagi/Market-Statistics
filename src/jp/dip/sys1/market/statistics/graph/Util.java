@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jp.dip.sys1.market.statistics.Sales;
+import jp.dip.sys1.market.statistics.data.Sales;
 
 public class Util {
 	/**
