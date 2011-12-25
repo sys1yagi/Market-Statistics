@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
 import jp.dip.sys1.market.statistics.data.Sales;
 import jp.dip.sys1.market.statistics.data.Settings;
 public class TextReporter implements Reporter {

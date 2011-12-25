@@ -18,6 +18,11 @@ import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 import org.supercsv.util.CSVContext;
 
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
 public class SalesReader {
 
 	private final static CellProcessor DIRECTORY_VALUE = new StringCellProcessor() {

@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * 売上データ。一個の販売データを表す
  * 
- * @author yagitoshihiro
+ * @author sys1yagi
  * 
  */
 public class Sales {

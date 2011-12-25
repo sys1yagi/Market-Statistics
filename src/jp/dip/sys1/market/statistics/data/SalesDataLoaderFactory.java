@@ -1,11 +1,11 @@
 package jp.dip.sys1.market.statistics.data;
 
-
-public class SalesDataLoaderFactory {
-    private SalesDataLoaderFactory This() {
-        return this;
-    }
-    
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
+public class SalesDataLoaderFactory {   
     public static SalesDataLoader createLoader(Settings settings){
         
         //TODO add settings

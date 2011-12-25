@@ -5,6 +5,11 @@ import java.util.List;
 
 import jp.dip.sys1.market.statistics.data.Sales;
 
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
 public interface SalesGraph {
 	public void createChart(File outputDir, String prefix, List<Sales> sales); 
 }

@@ -10,6 +10,11 @@ import jp.dip.sys1.market.statistics.graph.DairyBarGraph;
 import jp.dip.sys1.market.statistics.graph.MonthlyBarGraph;
 import jp.dip.sys1.market.statistics.graph.MonthlyLineGraph;
 
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
 public class HTMLReporter implements Reporter {
     @Override
     public void report(Settings settings, List<Sales> sales) throws IOException {

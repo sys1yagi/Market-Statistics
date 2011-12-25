@@ -17,6 +17,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import jp.dip.sys1.market.statistics.data.Sales;
 
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
 public class DairyBarGraph implements SalesGraph {
 
 	@Override

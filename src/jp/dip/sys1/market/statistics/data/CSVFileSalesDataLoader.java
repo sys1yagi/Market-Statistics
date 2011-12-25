@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
 public class CSVFileSalesDataLoader implements SalesDataLoader {
-    private CSVFileSalesDataLoader This() {
-        return this;
-    }
 
     @Override
     public List<Sales> getAllSalesData(Settings settings) throws IOException{

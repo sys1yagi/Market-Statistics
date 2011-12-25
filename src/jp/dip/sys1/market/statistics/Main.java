@@ -3,8 +3,6 @@ package jp.dip.sys1.market.statistics;
 
 import java.io.IOException;
 import java.util.List;
-
-
 import jp.dip.sys1.market.statistics.data.Sales;
 import jp.dip.sys1.market.statistics.data.SalesDataLoader;
 import jp.dip.sys1.market.statistics.data.SalesDataLoaderFactory;
@@ -12,6 +10,11 @@ import jp.dip.sys1.market.statistics.data.Settings;
 import jp.dip.sys1.market.statistics.report.Reporter;
 import jp.dip.sys1.market.statistics.report.ReporterFactory;
 
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
 public class Main {
 
     /**

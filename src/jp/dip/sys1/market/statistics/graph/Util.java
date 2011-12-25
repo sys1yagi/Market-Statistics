@@ -7,6 +7,11 @@ import java.util.Map;
 
 import jp.dip.sys1.market.statistics.data.Sales;
 
+/**
+ * 
+ * @author sys1yagi
+ *
+ */
 public class Util {
 	/**
 	 * Salesをプロダクト毎に振り分け、Mapを作成する
