@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/highcharts.js"></script>
+<style>
+	body{padding:20px;}
+	h1{
+		border-bottom:1px solid #000;
+	}
+</style>
+<script>
+window.onload=function(){
+	var src = { "data":[
+		$sales
+	]};
+	
+	var dispatchProductId = function(data){
+		var obj = {};
+		var size = data.data.length;
+		for(var i = 0; i < size; i++){
+			var sales = data.data[i];
+			if(obj[sales.ProductID] === undefined){
+				obj[sales.ProductID] = [];	
+			}
+			obj[sales.ProductID].push(sales);
+		}
+		
+		return obj;
+	}
+	var dispatchArea = function(data){
+	
+	}
+	
+	//地域別売り上げ
+	var areaGraph = function(data){
+		console.log(data.length);
+		if(data.length <= 0){
+			return;
+		}
+		
+		var tmp = {};
+		var size = data.length;
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			if(tmp[sales.StateOfBuyer] === undefined){
+				tmp[sales.StateOfBuyer] = 0;
+			}
+			tmp[sales.StateOfBuyer]++;
+		}
+		var area = [];
+		var values = [];
+		for (var i in tmp) {
+			if(tmp.hasOwnProperty(i)){
+				console.log(i + ":" + tmp[i]);
+				area.push(i);
+				values.push(tmp[i]);		
+			}
+		}
+		$("#container").append("<div id=\""+ data[0].ProductID + "\" style=\"width:600px;height:"+ (100+area.length*17) +"px; float:left;\"></div>")
+		.append("合計販売数:" + data.length + "個")
+		.append("<br style='clear:both;'/>");
+		;
+		var chart;
+		$(document).ready(function() {
+			chart = new Highcharts.Chart({
+				chart: {
+					renderTo: data[0].ProductID,
+					defaultSeriesType: 'bar'
+				},
+				title: {
+					text: data[0].ProductTitle+"("+data[0].ProductID+")の販売個数"
+				},
+				subtitle: {
+					text: ''
+				},
+				xAxis: {
+					categories: area,
+					title: {
+						text: null
+					}
+				},
+				yAxis: {
+					min: 0,
+					title: {
+						text: '販売個数',
+						align: 'high'
+					}
+				},
+				tooltip: {
+					formatter: function() {
+						return ''+
+							 this.series.name +': '+ this.y +' 個';
+					}
+				},
+				plotOptions: {
+					bar: {
+						dataLabels: {
+							enabled: true
+						}
+					}
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -100,
+					y: 100,
+					floating: true,
+					borderWidth: 1,
+					backgroundColor: '#FFFFFF',
+					shadow: true
+				},
+				credits: {
+					enabled: false
+				},
+			        series: [
+			        {
+						name: '個数',
+						data: values
+					}
+					//割合
+				]
+			});
+		});
+	}
+	
+	
+	
+	//TODO 設定で制御
+	var products = dispatchProductId(src);
+	for (var i in products) {
+		if(products.hasOwnProperty(i)){
+			console.log("key:"+ i);
+			areaGraph(products[i]);
+		}
+	}
+};	
+		
+
+</script>
+</head>
+
+<body>
+<h1>$title</h1>
+
+<div id="container">
+</div>
+
+
+
+
+</div>
+
+</body>
+
+</html>

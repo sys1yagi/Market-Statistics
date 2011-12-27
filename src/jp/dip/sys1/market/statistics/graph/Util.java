@@ -32,4 +32,25 @@ public class Util {
 		}
 		return map;
 	}
+	
+	/**
+	 * Salesデータを販売地域毎に振り分ける
+	 * @param sales
+	 * @return
+	 */
+	public static Map<String,List<Sales>> dispachArea(List<Sales> sales){
+	    Map<String, List<Sales>> map = new HashMap<String, List<Sales>>();
+	    System.out.println("dispatchArea:" + sales.size());
+        for (Sales s : sales) {
+            List<Sales> ss = map.get(s.getStateOfBuyer());
+            if (ss == null) {
+                ss = new ArrayList<Sales>();
+                ss.add(s);
+                map.put(s.getStateOfBuyer(), ss);
+            } else {
+                ss.add(s);
+            }
+        }
+        return map;
+	}
 }

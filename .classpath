@@ -7,5 +7,9 @@
 	<classpathentry kind="lib" path="libs/SuperCSV-with_src-1.52.jar"/>
 	<classpathentry kind="lib" path="libs/jcommon-1.0.16.jar"/>
 	<classpathentry kind="lib" path="libs/jfreechart-1.0.13.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="libs/velocity-1.7.jar"/>
+	<classpathentry kind="lib" path="libs/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="libs/commons-lang-2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -29,9 +29,9 @@ public class MonthlyLineGraph implements SalesGraph {
 		if (!outputDir.exists()) {
 			outputDir.mkdirs();
 		}
-		Map<String, List<Sales>> packages = Util.dispatchProductId(sales);
+		Map<String, List<Sales>> products = Util.dispatchProductId(sales);
 
-		for (Entry<String, List<Sales>> entry : packages.entrySet()) {
+		for (Entry<String, List<Sales>> entry : products.entrySet()) {
 			List<Sales> tmp = new ArrayList<Sales>(entry.getValue());
 			if (tmp.isEmpty()) {
 				continue;
