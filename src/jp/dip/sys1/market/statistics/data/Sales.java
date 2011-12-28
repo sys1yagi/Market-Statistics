@@ -1,5 +1,6 @@
 package jp.dip.sys1.market.statistics.data;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -188,12 +189,13 @@ public class Sales {
     }
 
     public String toJSON() {
+    	SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         // @formatter:off
 	    return new StringBuilder().append("{\"OrderNumber\":\"").append(mOrderNumber).append("\"")
-	            .append(", \"OrderChargedDate\":\"").append(mOrderChargedDate).append("\"")
+	            .append(", \"OrderChargedDate\":\"").append(f.format(mOrderChargedDate)).append("\"")
                 .append(", \"OrderChargedTimestamp\":\"").append(mOrderChargedTimestamp).append("\"")
                 .append(", \"FinancialStatus\":\"").append(mFinancialStatus).append("\"")
-                .append(", \"PayoutDate\":\"").append(mPayoutDate).append("\"")
+                .append(", \"PayoutDate\":\"").append(f.format(mPayoutDate)).append("\"")
                 .append(", \"DeviceModel\":\"").append(mDeviceModel).append("\"")
                 .append(", \"ProductTitle\":\"").append(mProductTitle).append("\"")
                 .append(", \"ProductID\":\"").append(mProductID).append("\"")

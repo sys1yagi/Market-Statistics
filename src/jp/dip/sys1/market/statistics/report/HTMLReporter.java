@@ -1,10 +1,8 @@
 package jp.dip.sys1.market.statistics.report;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -25,7 +23,7 @@ public class HTMLReporter implements Reporter {
     @Override
     public void report(Settings settings, List<Sales> sales) throws IOException {
         File outputDir = new File(settings.getOutputDirectory());
-
+        outputDir.mkdirs();
         StringBuilder sb = new StringBuilder();
         Iterator<Sales> itr = sales.iterator();
         while(itr.hasNext()){

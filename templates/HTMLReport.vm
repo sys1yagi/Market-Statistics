@@ -2,12 +2,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/highcharts.js"></script>
+<link rel="stylesheet" type="text/css" href="js/jqPlot/jquery.jqplot.css" />
+<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="js/jqPlot/excanvas.js"></script><![endif]-->
+<script src="js/jqPlot/jquery.min.js" type="text/javascript"></script>
+<script src="js/jqPlot/jquery.jqplot.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.pointLabels.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.highlighter.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.cursor.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.pieRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqPlot/plugins/jqplot.donutRenderer.min.js"></script>
+
 <style>
 	body{padding:20px;}
 	h1{
 		border-bottom:1px solid #000;
+	}
+	h3{
+		padding-left:20px;
 	}
 </style>
 <script>
@@ -15,7 +32,7 @@ window.onload=function(){
 	var src = { "data":[
 		$sales
 	]};
-	
+	var container = $("#container");
 	var dispatchProductId = function(data){
 		var obj = {};
 		var size = data.data.length;
@@ -30,16 +47,158 @@ window.onload=function(){
 		return obj;
 	}
 	var dispatchArea = function(data){
-	
-	}
-	
-	//地域別売り上げ
-	var areaGraph = function(data){
-		console.log(data.length);
 		if(data.length <= 0){
 			return;
 		}
+		var tmp = {};
+		var size = data.length;
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			//sales.OrderChargedTimestamp
+			if(tmp[sales.StateOfBuyer] === undefined){
+				tmp[sales.StateOfBuyer] = 0;
+			}
+			tmp[sales.StateOfBuyer]++;
+		}
+	}
+	var dispatchMonthly = function(data){
+		if(data.length <= 1){
+			return;
+		}
+		var tmp = {};
+		var size = data.length;
+		console.log("size:"+ size);
+		for(var i = 0; i < size; i++){
+			
+			var sales = data[i];
+			var d = new Date(sales.OrderChargedDate);
+			d = (1900+d.getYear())+"-"+(d.getMonth()+1);
+			if(tmp[d] === undefined){
+				tmp[d] = 0;
+			}
+			tmp[d]++;
+			
+		}
+		return tmp;
+	}
+	
+	var dispatchDayOfWeek = function(data){
+		if(data.length <= 1){
+			return;
+		}
+		var dayNames = new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+		var tmp = {};
+		var size = data.length;
+		console.log("size:"+ size);
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			var d = new Date(sales.OrderChargedDate);
+			d = dayNames[d.getDay()];
+			if(tmp[d] === undefined){
+				tmp[d] = 0;
+			}
+			tmp[d]++;
+			
+		}
+		return tmp;
+	}
+	var dispatchDevice = function(data){
+		if(data.length <= 1){
+			return;
+		}
+		var tmp = {};
+		var size = data.length;
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			if(tmp[sales.DeviceModel] === undefined){
+				tmp[sales.DeviceModel] = 0;
+			}
+			tmp[sales.DeviceModel]++;
+		}
+		return tmp;
+	}
+	
+	//月別
+	var monthlyLine = function(data){
+		if(data.length <= 1){
+			return;
+		}
+		var tmp = dispatchMonthly(data);
+		var line = [];
+		for(var i in tmp){
+			console.log(i);
+			line.push([i, tmp[i]]);
+		}
 		
+		$("#container").append("<div id=\""+ data[0].ProductID + "monthly\" style=\"width:800px;height:400px; float:left;\"></div>")
+		//メタデータとかtableを埋める?
+		.append("<br style='clear:both;'/>");
+		$(document).ready(function(){
+		  var plot1 = $.jqplot(data[0].ProductID + "monthly", [line], {
+		    title:'',
+		    axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions:{formatString:'%Y-%#m'},
+				min:'January 1, 2011 00:00:00', 
+              	tickInterval: '1 months',  
+		    }},
+		    series:[{lineWidth:4, markerOptions:{style:'square'}, pointLabels: { show:true }}]
+		  });
+		});
+	}
+	
+	//週別
+	var weekLine = function(data){
+	}
+	
+	//曜日別
+	var dayOfWeekBar = function(data){
+		if(data.length <= 1){
+			return;
+		}
+		var tmp = dispatchDayOfWeek(data);
+		var bar = [];
+		var ticks = [];
+		for(var i in tmp){
+			bar.push(tmp[i]);
+			ticks.push(i);
+		}
+		$("#container").append("<div id=\""+ data[0].ProductID + "dayOfWeek\" style=\"width: 600px;height:300px; float:left;\"></div>")
+		//メタデータとかtableを埋める?
+		.append("<br style='clear:both;'/>");
+		$(document).ready(function(){
+
+		    var plot1 = $.jqplot(data[0].ProductID + "dayOfWeek", [bar], {
+		        seriesDefaults:{
+		            renderer:$.jqplot.BarRenderer,
+		            rendererOptions: {fillToZero: true}
+		        },
+		        series:[
+		            {label:'個数', pointLabels: { show:true }},
+		        ],
+		        legend: {
+		            show: true,
+		            placement: 'outsideGrid'
+		        },
+		        axes: {
+		            xaxis: {
+		                renderer: $.jqplot.CategoryAxisRenderer,
+		                ticks: ticks
+		            },
+		            yaxis: {
+		                pad: 1.05,
+		                tickOptions: {formatString: '%d個'}
+		            }
+		        }
+		    });
+		});
+	}
+	
+	//時間帯別
+	
+	//地域別売り上げ
+	var areaGraph = function(data){
+		if(data.length <= 0){
+			return;
+		}
 		var tmp = {};
 		var size = data.length;
 		for(var i = 0; i < size; i++){
@@ -53,104 +212,209 @@ window.onload=function(){
 		var values = [];
 		for (var i in tmp) {
 			if(tmp.hasOwnProperty(i)){
-				console.log(i + ":" + tmp[i]);
-				area.push(i);
-				values.push(tmp[i]);		
+				values.push([tmp[i], i]);
 			}
 		}
-		$("#container").append("<div id=\""+ data[0].ProductID + "\" style=\"width:600px;height:"+ (100+area.length*17) +"px; float:left;\"></div>")
-		.append("合計販売数:" + data.length + "個")
+
+		$("#container").append("<div id=\""+ data[0].ProductID + "area\" style=\"width:600px;height:"+ (100+values.length*11) +"px; float:left;\"></div>")
+		//メタデータとかtableを埋める?
+		.append("ここにテーブルが出るけどまだだよ")
 		.append("<br style='clear:both;'/>");
 		;
-		var chart;
 		$(document).ready(function() {
-			chart = new Highcharts.Chart({
-				chart: {
-					renderTo: data[0].ProductID,
-					defaultSeriesType: 'bar'
-				},
-				title: {
-					text: data[0].ProductTitle+"("+data[0].ProductID+")の販売個数"
-				},
-				subtitle: {
-					text: ''
-				},
-				xAxis: {
-					categories: area,
-					title: {
-						text: null
-					}
-				},
-				yAxis: {
-					min: 0,
-					title: {
-						text: '販売個数',
-						align: 'high'
-					}
-				},
-				tooltip: {
-					formatter: function() {
-						return ''+
-							 this.series.name +': '+ this.y +' 個';
-					}
-				},
-				plotOptions: {
-					bar: {
-						dataLabels: {
-							enabled: true
-						}
-					}
-				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'top',
-					x: -100,
-					y: 100,
-					floating: true,
-					borderWidth: 1,
-					backgroundColor: '#FFFFFF',
-					shadow: true
-				},
-				credits: {
-					enabled: false
-				},
-			        series: [
-			        {
-						name: '個数',
-						data: values
-					}
-					//割合
-				]
+		    var plot2 = $.jqplot(data[0].ProductID+"area", [
+		        values
+		        ], {
+		        seriesDefaults: {
+		            renderer:$.jqplot.BarRenderer,
+		            pointLabels: { show: true, location: 'e', edgeTolerance: -5 },
+		            shadowAngle: 135,
+		            rendererOptions: {
+		                barDirection: 'horizontal'
+		            }
+		        },
+		        axes: {
+		            yaxis: {
+		                renderer: $.jqplot.CategoryAxisRenderer
+		            }
+		        }
 			});
+		});
+	}
+	
+
+	//端末の分布
+	var deviceDistribution = function(data){
+		if(data.length <= 1){
+			return;
+		}
+		var tmp = dispatchDevice(data);
+		var pie = [];
+		for(var i in tmp){
+			pie.push([i,tmp[i]]);
+		}
+		//ソート
+		pie.sort(function(a,b) {return a[1]-b[1];});
+		//上位10位まで
+		if(pie.length > 11){
+			var t = [];
+			for(var i = 0; i < 10; i++){
+				t[i] = pie[i];
+			}
+			t[10] = ["others", 0];
+			for(var i = 10; i < pie.length; i++){
+				t[10][1] += pie[i][1];
+			}
+			pie = t;
+		}
+		
+		
+		$("#container").append("<div id=\""+ data[0].ProductID + "pie\" style=\"width:700px;height:500px; float:left;\"></div>")
+		//メタデータとかtableを埋める?
+		.append("ここにテーブルが出るけどまだだよ")
+		.append("<br style='clear:both;'/>");
+		;
+		$(document).ready(function(){
+		  var plot1 = jQuery.jqplot (data[0].ProductID + "pie", [pie], 
+		    { 
+		      seriesDefaults: {
+		        renderer: jQuery.jqplot.PieRenderer, 
+		        rendererOptions: {
+		          showDataLabels: true
+		        }
+		      }, 
+		      legend: { show:true, location: 'e' }
+		    }
+		  );
 		});
 	}
 	
 	
 	
+	var currencyDistribution = function(data){
+		var size = data.length;
+		var count = {};
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			if(count[sales.CurrencyOfSale] === undefined){
+				count[sales.CurrencyOfSale] = 0;
+			}
+			count[sales.CurrencyOfSale]++;
+		}
+		return count;
+	}
+	var averageSales = function(data){
+		var size = data.length;
+		var map = {};
+		var count = {};
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			if(map[sales.CurrencyOfSale] === undefined){
+				map[sales.CurrencyOfSale] = 0;
+				count[sales.CurrencyOfSale] = 0;
+			}
+			map[sales.CurrencyOfSale] += parseFloat(sales.ItemPrice);
+			count[sales.CurrencyOfSale]++;
+		}
+		for(var i in map){
+			map[i] = map[i]/count[i];
+		}
+		
+		return map;
+	}
+	var allSales = function(data){
+		var size = data.length;
+		var map = {};
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			if(map[sales.CurrencyOfSale] === undefined){
+				map[sales.CurrencyOfSale] = 0;
+			}
+			map[sales.CurrencyOfSale] += parseFloat(sales.ItemPrice);
+		}
+		return map;
+	}	
+	var allProfit = function(data){
+		var size = data.length;
+		var map = {};
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			if(map[sales.CurrencyOfSale] === undefined){
+				map[sales.CurrencyOfSale] = 0;
+			}
+			map[sales.CurrencyOfSale] += parseFloat(sales.MerchantReceives);
+		}
+		return map;
+	}
 	//TODO 設定で制御
 	var products = dispatchProductId(src);
 	for (var i in products) {
 		if(products.hasOwnProperty(i)){
-			console.log("key:"+ i);
-			areaGraph(products[i]);
+			var data = products[i];
+			container.append("<h2>" + products[i][0].ProductTitle+"("+products[i][0].ProductID + ")</h2>");
+			container.append("<h3>サマリ(販売期間出す)</h3>")
+			var d = $("<div style='padding-left:45px'>");
+			d.append("<h4>販売数</h4>");
+			var cd = currencyDistribution(data);
+			for(var i in cd){
+				d.append("通貨毎の販売数" + i + ": " + cd[i] + "<br/>");
+			}
+			d.append("合計販売数:" + data.length + "個<br/>")
+			
+			d.append("<h4>平均単価</h4>");
+			var ave = averageSales(data);
+			for(var i in ave){
+				d.append("平均単価" + i + ": " + ave[i] + "<br/>");
+			};
+			
+			d.append("<h4>総売上</h4>");
+			var as = allSales(data);
+			for(var i in as){
+				d.append("総売上" + i + ": " + as[i] + "<br/>");
+			};
+			
+			d.append("<h4>利益</h4>");
+			var ap = allProfit(data);
+			var allp = 0;
+			for(var i in ap){
+				d.append("利益" + i + ": " + ap[i] + "円<br/>");
+				allp += ap[i];
+			};
+			d.append("総利益:"+allp + "円<br/>");
+			container.append(d);
+			
+			container.append("<h3>地域別販売個数</h3>");
+			areaGraph(data);
+			
+			container.append("<h3>月別販売個数</h3>");
+			monthlyLine(data);
+			
+			container.append("<h3>週別販売個数</h3>");
+			
+			
+			container.append("<h3>曜日別個数</h3>");
+			dayOfWeekBar(data);
+			
+			container.append("<h3>時間帯別個数</h3>");
+			
+			
+			container.append("<h3>端末分布</h3>");
+			deviceDistribution(data);
+			
+			
+			container.append("<hr/>");
 		}
 	}
 };	
-		
 
 </script>
 </head>
 
 <body>
 <h1>$title</h1>
-
-<div id="container">
+<div id="summary">
 </div>
-
-
-
-
+<div id="container">
 </div>
 
 </body>
