@@ -117,6 +117,22 @@ window.onload=function(){
 		}
 		return tmp;
 	}
+	var dispatchCountry = function(data){
+		if(data.length <= 1){
+			return;
+		}
+		var tmp = {};
+		var size = data.length;
+		for(var i = 0; i < size; i++){
+			var sales = data[i];
+			if(tmp[sales.CountryOfBuyer] === undefined){
+				tmp[sales.CountryOfBuyer] = 0;
+			}
+			tmp[sales.CountryOfBuyer]++;
+		}
+		return tmp;
+	}
+	
 	
 	//月別
 	var monthlyLine = function(data){
@@ -289,6 +305,54 @@ window.onload=function(){
 		});
 	}
 	
+	//国別
+	var countryDistribution = function(data){
+		if(data.length <= 1){
+			return;
+		}
+		var tmp = dispatchCountry(data);
+		var pie = [];
+		for(var i in tmp){
+			pie.push([i,tmp[i]]);
+		}
+		//ソート
+		pie.sort(function(a,b) {return a[1]-b[1];});
+		//上位10位まで
+		/*
+		if(pie.length > 11){
+			var t = [];
+			for(var i = 0; i < 10; i++){
+				t[i] = pie[i];
+			}
+			t[10] = ["others", 0];
+			for(var i = 10; i < pie.length; i++){
+				t[10][1] += pie[i][1];
+			}
+			pie = t;
+		}
+		*/
+		
+		
+		$("#container").append("<div id=\""+ data[0].ProductID + "country\" style=\"width:700px;height:500px; float:left;\"></div>")
+		//メタデータとかtableを埋める?
+		.append("ここにテーブルが出るけどまだだよ")
+		.append("<br style='clear:both;'/>");
+		;
+		$(document).ready(function(){
+		  var plot1 = jQuery.jqplot (data[0].ProductID + "country", [pie], 
+		    { 
+		      seriesDefaults: {
+		        renderer: jQuery.jqplot.PieRenderer, 
+		        rendererOptions: {
+		          showDataLabels: true
+		        }
+		      }, 
+		      legend: { show:true, location: 'e' }
+		    }
+		  );
+		});
+	}
+	
 	
 	
 	var currencyDistribution = function(data){
@@ -388,6 +452,9 @@ window.onload=function(){
 			
 			container.append("<h3>月別販売個数</h3>");
 			monthlyLine(data);
+			
+			container.append("<h3>国別販売個数</h3>");
+			countryDistribution(data);
 			
 			container.append("<h3>週別販売個数</h3>");
 			

@@ -204,11 +204,11 @@ public class Sales {
                 .append(", \"TaxesCollected\":\"").append(mTaxesCollected).append("\"")
                 .append(", \"ChargedAmount\":\"").append(mChargedAmount).append("\"")
                 .append(", \"MerchantCurrency\":\"").append(mMerchantCurrency).append("\"")
-                .append(", \"EstimatedFXRate\":\"").append(mEstimatedFXRate).append("\"")
+                //.append(", \"EstimatedFXRate\":\"").append(mEstimatedFXRate).append("\"")
                 .append(", \"MerchantReceives\":\"").append(mMerchantReceives).append("\"")
-                .append(", \"CityOfBuyer\":\"").append(mCityOfBuyer).append("\"")
+                //.append(", \"CityOfBuyer\":\"").append(mCityOfBuyer).append("\"")
                 .append(", \"StateOfBuyer\":\"").append(mStateOfBuyer).append("\"")
-                .append(", \"PostalCodeOfBuyer\":\"").append(mPostalCodeOfBuyer).append("\"")
+                //.append(", \"PostalCodeOfBuyer\":\"").append(mPostalCodeOfBuyer).append("\"")
                 .append(", \"CountryOfBuyer\":\"").append(mCountryOfBuyer).append("\"")
                 .append("}").toString();
         // @formatter:on
