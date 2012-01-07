@@ -15,6 +15,9 @@
 				<pathelement path="libs/jfreechart-1.0.13.jar" />
 				<pathelement path="libs/spiffy-with_source-all-0.05.jar" />
 				<pathelement path="libs/SuperCSV-with_src-1.52.jar" />
+				<pathelement path="libs/velocity-1.7.jar" />
+				<pathelement path="libs/commons-lang-2.4.jar" />
+				<pathelement path="libs/commons-collections-3.2.1.jar" />
 			</classpath>
 		</javac>
 	</target>
